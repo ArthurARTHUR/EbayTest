@@ -128,6 +128,7 @@ if __name__ == "__main__":
         st.info(f"""
         - **售价:**${price:.2f}
         - **售价:**¥{price*exchange_rate:.2f}
+        - **售价:**${net_sales_usd:.2f}
         - **实际到账收入:** ¥{actual_income_cny:.2f}
         - **物流+产品成本项:** ¥{product_cost + total_cost_logistics:.2f}
         """)
@@ -138,5 +139,6 @@ if __name__ == "__main__":
             st.success(f'### 净利润% {profit_cny/(price*exchange_rate)*100:.2f}')
         else:
             st.error(f"### 净亏损: ¥{profit_cny:.2f}")
+
 
     st.divider()
