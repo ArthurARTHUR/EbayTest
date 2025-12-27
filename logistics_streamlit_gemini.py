@@ -128,7 +128,7 @@ if __name__ == "__main__":
         st.info(f"""
         - **售价:**${price:.2f}
         - **售价:**¥{price*exchange_rate:.2f}
-        - **售价:**${net_sales_usd:.2f}
+        - **实际到账收入:**${net_sales_usd:.2f}
         - **实际到账收入:** ¥{actual_income_cny:.2f}
         - **物流+产品成本项:** ¥{product_cost + total_cost_logistics:.2f}
         """)
@@ -142,3 +142,4 @@ if __name__ == "__main__":
 
 
     st.divider()
+
