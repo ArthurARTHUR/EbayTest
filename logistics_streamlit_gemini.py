@@ -81,6 +81,7 @@ if __name__ == "__main__":
     ns_instance = NetSales(price)
     
     net_sales_usd, fvf, int_fee, trans_fee = ns_instance.net_sales_calculator()
+    total_fee_usd = fvf + int_fee + trans_fee
     
     volumetric_weight = logistics.volumetric_weight_calculator(length, width, height)
     chargable_weight = logistics.chargable_weight_calculator(length, width, height, weight, volumetric_weight)
@@ -90,22 +91,11 @@ if __name__ == "__main__":
     
     actual_income_cny = net_sales_usd * exchange_rate
     profit_cny = actual_income_cny - product_cost - total_cost_logistics
+    
 
     # --- UI POLISHING START ---
 
     # Row 1: Key Metrics
-    m1, m2, m3, m4 = st.columns(4)
-    m1.metric("计费重 (g)", f"{chargable_weight:.1f}")
-    m2.metric("平台结算 (USD)", f"${net_sales_usd:.2f}")
-    m3.metric("物流总支出", f"¥{total_cost_logistics:.2f}")
-    
-    # Dynamic coloring for profit metric
-    if profit_cny >= 0:
-        m4.metric("最终利润 (CNY)", f"¥{profit_cny:.2f}", delta=f"利润率: {(profit_cny/(price*exchange_rate)*100):.1f}%" if price > 0 else None)
-    else:
-        m4.metric("最终利润 (CNY)", f"¥{profit_cny:.2f}", delta=f"亏损: {(profit_cny/(price*exchange_rate)*100):.1f}%", delta_color="inverse")
-
-    st.markdown("### 🔍 详细明细")
     col1, col2, col3 = st.columns(3)
 
     with col1:
@@ -116,6 +106,7 @@ if __name__ == "__main__":
         - **挂号费:** ¥{register_fee:.2f}
         - **快递费:** ¥{deliver_fee:.2f}
         - **包材费用:** ¥0.00
+        - **总物流支出:** ¥{(deliver_fee+register_fee):.2f}
         """)
 
     with col2:
@@ -124,14 +115,18 @@ if __name__ == "__main__":
         - **产品成本:** ¥{product_cost:.2f}
         - **汇率:** {exchange_rate}
         - **FVF (佣金):** ${fvf:.2f}
+        - **FVF (佣金):** ¥{exchange_rate*fvf:.2f}
         - **国际手续费:** ${int_fee:.2f}
+        - **国际手续费:** ¥{exchange_rate*int_fee:.2f}
         - **Transaction Fee:** ${trans_fee:.2f}
+        - **Transaction Fee:** ¥{exchange_rate*trans_fee:.2f}
+        - **平台费&产品总成本:** ¥{product_cost+exchange_rate*fvf+exchange_rate*int_fee+exchange_rate*trans_fee:.2f}
         """)
 
     with col3:
         st.subheader('💰 利润总结')
         st.write(f"**实际到账收入:** ¥{actual_income_cny:.2f}")
-        st.write(f"**总成本项:** ¥{product_cost + total_cost_logistics:.2f}")
+        st.write(f"**物流+产品成本项:** ¥{product_cost + total_cost_logistics:.2f}")
         
         st.divider()
         if profit_cny >= 0:
