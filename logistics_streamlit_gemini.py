@@ -133,7 +133,7 @@ if __name__ == "__main__":
         st.divider()
         if profit_cny >= 0:
             st.success(f"### 净利润: ¥{profit_cny:.2f}")
-            st.success(f'### 净利润率 {profit_cny/price*exchange_rate:.2f}')
+            st.success(f'### 净利润% {profit_cny/(price*exchange_rate)*100:.2f}')
         else:
             st.error(f"### 净亏损: ¥{profit_cny:.2f}")
 
