@@ -125,12 +125,15 @@ if __name__ == "__main__":
 
     with col3:
         st.subheader('💰 利润总结')
+        st.write(f"**售价:**${price:.2f}")
+        st.write(f"**售价:**¥{price*exchange_rate:.2f}")
         st.write(f"**实际到账收入:** ¥{actual_income_cny:.2f}")
         st.write(f"**物流+产品成本项:** ¥{product_cost + total_cost_logistics:.2f}")
         
         st.divider()
         if profit_cny >= 0:
             st.success(f"### 净利润: ¥{profit_cny:.2f}")
+            st.success(f'### 净利润率 {profit_cny/price*exchange_rate:.2f}')
         else:
             st.error(f"### 净亏损: ¥{profit_cny:.2f}")
 
